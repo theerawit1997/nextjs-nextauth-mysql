@@ -56,7 +56,7 @@ function Loginpage() {
           <div className="col-start-2 col-span-4 p-4">
             <p>
               Don't have an account?{" "}
-              <Link href="/login" className="text-blue-500 hover:underline">
+              <Link href="/login" className="text-green-500 hover:underline">
                 Sign up now
               </Link>
             </p>
