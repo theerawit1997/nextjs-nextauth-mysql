@@ -1,23 +1,14 @@
-import db from "../db";
+import { connectMySQL } from "../db";
 import { NextResponse } from "next/server";
 
 export async function GET() {
   try {
-    // const [rows] = await db.query("SELECT 1 + 1 AS result");
-    // return NextResponse.json({
-    //   message: "Database connection successful!",
-    //   data: rows,
-    // });
-
+    const connection = await connectMySQL();
+    const [rows] = await connection.query("SELECT 1 + 1 AS result");
     // const [rows] = await db.query("SHOW TABLES");
-    // return NextResponse.json({
-    //   message: "Tables fetched successfully!",
-    //   tables: rows,
-    // });
-    
-    const [rows] = await db.query("SELECT * FROM users");
+    // const [rows] = await db.query("SELECT * FROM users");
     return NextResponse.json({
-      message: "Database connection successful!",
+      message: "Database connected successfully!",
       data: rows,
     });
   } catch (error) {
