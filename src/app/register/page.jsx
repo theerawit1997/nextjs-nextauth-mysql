@@ -5,6 +5,54 @@ import Navbar from "../components/Navbar";
 import Link from "next/link";
 
 function Registerpage() {
+  const [name, setName] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmpassword, setConfirmpassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!name && !password && !confirmpassword && !email) {
+      setError("please enter all input");
+      return;
+    }
+
+    if (!name) {
+      setError("please enter name");
+      return;
+    }
+
+    if (!password) {
+      setError("please enter password");
+      return;
+    }
+
+    if (!confirmpassword) {
+      setError("please enter confirmpassword");
+      return;
+    }
+
+    if (password != confirmpassword) {
+      setError("password not match");
+      return;
+    }
+
+    if (!email) {
+      setError("please enter email");
+      return;
+    }
+  };
+
+  const handleReset = () => {
+    setName("");
+    setPassword("");
+    setConfirmpassword("");
+    setEmail("");
+    setError("");
+  };
+
   return (
     <div>
       <Navbar />
@@ -19,8 +67,17 @@ function Registerpage() {
               </div>
             </label>
           </div>
-          <div className="col-start-2 col-span-4 p-4 bg-gray-100">
-            <form action="">
+          {error && (
+            <div className="col-start-2 col-span-4 p-2">
+              <div className="flex justify-end">
+                <span className="bg-red-600 px-2 py-2 me-2 mb-2 rounded dark:bg-red-800 text-white">
+                  {error}
+                </span>
+              </div>
+            </div>
+          )}
+          <div className="col-start-2 col-span-4 p-4 bg-gray-200">
+            <form onSubmit={handleSubmit}>
               <label className="block p-2">
                 <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block font-medium text-slate-700">
                   User name
@@ -30,6 +87,7 @@ function Registerpage() {
                   name="name"
                   className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1"
                   placeholder="Enter your name"
+                  onChange={(e) => setName(e.target.value)}
                 />
               </label>
               <label className="block p-2">
@@ -41,6 +99,7 @@ function Registerpage() {
                   name="password"
                   className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1"
                   placeholder="Enter your password"
+                  onChange={(e) => setPassword(e.target.value)}
                 />
               </label>
               <label className="block p-2">
@@ -52,6 +111,7 @@ function Registerpage() {
                   name="confirmpassword"
                   className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1"
                   placeholder="Confirm password"
+                  onChange={(e) => setConfirmpassword(e.target.value)}
                 />
               </label>
               <label className="block p-2">
@@ -63,6 +123,7 @@ function Registerpage() {
                   name="email"
                   className="mt-1 px-3 py-2 bg-white border shadow-sm border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1"
                   placeholder="Enter your email"
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </label>
               <div className="flex justify-center p-2">
@@ -75,6 +136,7 @@ function Registerpage() {
                 <button
                   type="reset"
                   className="bg-transparent hover:bg-yellow-500 text-yellow-700 font-semibold hover:text-white py-2 px-4 border border-yellow-500 hover:border-transparent rounded mx-1.5"
+                  onClick={handleReset}
                 >
                   Reset
                 </button>
@@ -84,7 +146,7 @@ function Registerpage() {
           <div className="col-start-2 col-span-4 p-4">
             <p>
               Do you have an account?{" "}
-              <Link href="/register" className="text-blue-500 hover:underline">
+              <Link href="/login" className="text-blue-500 hover:underline">
                 Sign in now
               </Link>
             </p>
