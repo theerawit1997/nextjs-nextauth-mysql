@@ -8,7 +8,6 @@ export const connectMySQL = async () => {
       password: process.env.DATABASE_PASSWORD,
       database: process.env.DATABASE_NAME,
     });
-
     console.log("Connected to MySQL Database");
 
     await connection.ping(); //ลอง ping ดู

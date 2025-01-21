@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Navbar from "../components/Navbar";
 import Link from "next/link";
 
@@ -11,68 +11,65 @@ function Registerpage() {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const validateInputs = () => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!name || !email || !password || !confirmpassword) {
+      displayError("All fields are required.");
+      return false;
+    }
+    if (!emailRegex.test(email)) {
+      displayError("Invalid email format.");
+      return false;
+    }
+    if (password.length < 8) {
+      displayError("Password must be at least 8 characters long.");
+      return false;
+    }
+    if (password !== confirmpassword) {
+      displayError("Passwords do not match.");
+      return false;
+    }
+    return true;
+  };
+
+  const displayError = (message) => {
+    setError(message);
+    setSuccess("");
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validateInputs()) return;
 
-    if (!name && !password && !confirmpassword && !email) {
-      setError("Please enter all input");
-      return;
-    } else if (!name) {
-      setError("Please enter name");
-      return;
-    } else if (!password) {
-      setError("Please enter password");
-      return;
-    } else if (!confirmpassword) {
-      setError("Please enter confirmpassword");
-      return;
-    } else if (password != confirmpassword) {
-      setError("password not match");
-      return;
-    } else if (!email) {
-      setError("Please enter email");
-      return;
-    } else {
-      setError("");
-    }
-
+    setIsLoading(true);
     try {
-      const req = await fetch("http://localhost:3000/api/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name,
-          password,
-          email,
-        }),
-      });
+      const req = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/register`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ name, password, email }),
+        }
+      );
 
       const res = await req.json();
 
       if (req.ok) {
-        // console.log(res);
-        console.log("status:" + req.status);
-        console.log("message:" + res.message);
-
+        handleReset();
         const form = e.target;
         form.reset();
-        handleReset();
-        setSuccess(res.message);
-        return;
+        setSuccess(res.message);        
       } else {
-        // console.log(res);
-        console.log("status:" + req.status);
-        console.log("message:" + res.message);
-
-        setError(res.message);
-        return;
+        displayError(res.message);
       }
     } catch (error) {
-      console.log(error.message);
-      return;
+      displayError("An error occurred. Please try again. " + error.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -91,22 +88,18 @@ function Registerpage() {
       <div className="container mx-auto">
         <div className="grid grid-cols-6 ">
           <div className="col-start-2 col-span-4">
-            <label className="block p-2">
-              <div className="flex justify-center">
-                <span className="px-2 py-2 me-2 mb-2 text-2xl text-black">
-                  Register
-                </span>
-              </div>
-            </label>
+            <div className="flex justify-center p-4">
+              <h2 className="text-2xl text-black">Register</h2>
+            </div>
           </div>
           {error && (
-            <div className="col-start-2 col-span-4 p-2 bg-red-600 text-white text-lg">
-              <div className="flex justify-center">{error}</div>
+            <div className="col-start-2 col-span-4 p-2 bg-red-600 text-white">
+              {error}
             </div>
           )}
           {success && (
-            <div className="col-start-2 col-span-4 p-2 bg-green-600 text-white text-lg">
-              <div className="flex justify-center">{success}</div>
+            <div className="col-start-2 col-span-4 p-2 bg-green-600 text-white">
+              {success}
             </div>
           )}
           <div className="col-start-2 col-span-4 p-2 bg-gray-200">
@@ -164,7 +157,7 @@ function Registerpage() {
                   type="submit"
                   className="bg-transparent hover:bg-green-500 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-500 hover:border-transparent rounded mx-1.5"
                 >
-                  Sign Up
+                  {isLoading ? "Signing Up..." : "Sign Up"}
                 </button>
                 <button
                   type="reset"
@@ -178,7 +171,7 @@ function Registerpage() {
           </div>
           <div className="col-start-2 col-span-4 p-4">
             <p>
-              Do you have an account?{" "}
+              Already have an account?{" "}
               <Link href="/login" className="text-blue-500 hover:underline">
                 Sign in now
               </Link>
