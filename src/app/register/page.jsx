@@ -100,13 +100,13 @@ function Registerpage() {
             </label>
           </div>
           {error && (
-            <div className="col-start-2 col-span-4 p-2 bg-red-400 text-white">
-              <div className="flex justify-end">{error}</div>
+            <div className="col-start-2 col-span-4 p-2 bg-red-600 text-white text-lg">
+              <div className="flex justify-center">{error}</div>
             </div>
           )}
           {success && (
-            <div className="col-start-2 col-span-4 p-2 bg-green-400 text-white">
-              <div className="flex justify-end">{success}</div>
+            <div className="col-start-2 col-span-4 p-2 bg-green-600 text-white text-lg">
+              <div className="flex justify-center">{success}</div>
             </div>
           )}
           <div className="col-start-2 col-span-4 p-2 bg-gray-200">
