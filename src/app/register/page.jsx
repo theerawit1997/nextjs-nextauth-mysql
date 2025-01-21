@@ -17,30 +17,57 @@ function Registerpage() {
     if (!name && !password && !confirmpassword && !email) {
       setError("please enter all input");
       return;
-    }
-
-    if (!name) {
+    } else if (!name) {
       setError("please enter name");
       return;
-    }
-
-    if (!password) {
+    } else if (!password) {
       setError("please enter password");
       return;
-    }
-
-    if (!confirmpassword) {
+    } else if (!confirmpassword) {
       setError("please enter confirmpassword");
       return;
-    }
-
-    if (password != confirmpassword) {
+    } else if (password != confirmpassword) {
       setError("password not match");
       return;
+    } else if (!email) {
+      setError("please enter email");
+      return;
+    } else {
+      setError("");
     }
 
-    if (!email) {
-      setError("please enter email");
+    try {
+      const req = await fetch("http://localhost:3000/api/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          password,
+          email,
+        }),
+      });
+
+      const res = await req.json();
+
+      if (req.ok) {
+        console.log(res);
+        console.log(req.status);
+        console.log(res.message);
+
+        const form = e.target;
+        form.reset();
+        handleReset();
+        return;
+      } else {
+        console.log(req.status);
+        console.log(res.message);
+        setError(res.message);
+        return;
+      }
+    } catch (error) {
+      console.log(error.message);
       return;
     }
   };
