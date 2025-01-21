@@ -8,11 +8,13 @@ export async function GET() {
     //   message: "Database connection successful!",
     //   data: rows,
     // });
+
     // const [rows] = await db.query("SHOW TABLES");
     // return NextResponse.json({
     //   message: "Tables fetched successfully!",
     //   tables: rows,
     // });
+    
     const [rows] = await db.query("SELECT * FROM users");
     return NextResponse.json({
       message: "Database connection successful!",
