@@ -10,27 +10,28 @@ function Registerpage() {
   const [confirmpassword, setConfirmpassword] = useState("");
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!name && !password && !confirmpassword && !email) {
-      setError("please enter all input");
+      setError("Please enter all input");
       return;
     } else if (!name) {
-      setError("please enter name");
+      setError("Please enter name");
       return;
     } else if (!password) {
-      setError("please enter password");
+      setError("Please enter password");
       return;
     } else if (!confirmpassword) {
-      setError("please enter confirmpassword");
+      setError("Please enter confirmpassword");
       return;
     } else if (password != confirmpassword) {
       setError("password not match");
       return;
     } else if (!email) {
-      setError("please enter email");
+      setError("Please enter email");
       return;
     } else {
       setError("");
@@ -52,17 +53,20 @@ function Registerpage() {
       const res = await req.json();
 
       if (req.ok) {
-        console.log(res);
-        console.log(req.status);
-        console.log(res.message);
+        // console.log(res);
+        console.log("status:" + req.status);
+        console.log("message:" + res.message);
 
         const form = e.target;
         form.reset();
         handleReset();
+        setSuccess(res.message);
         return;
       } else {
-        console.log(req.status);
-        console.log(res.message);
+        // console.log(res);
+        console.log("status:" + req.status);
+        console.log("message:" + res.message);
+
         setError(res.message);
         return;
       }
@@ -78,6 +82,7 @@ function Registerpage() {
     setConfirmpassword("");
     setEmail("");
     setError("");
+    setSuccess("");
   };
 
   return (
@@ -95,15 +100,16 @@ function Registerpage() {
             </label>
           </div>
           {error && (
-            <div className="col-start-2 col-span-4 p-2">
-              <div className="flex justify-end">
-                <span className="bg-red-600 px-2 py-2 me-2 mb-2 rounded dark:bg-red-800 text-white">
-                  {error}
-                </span>
-              </div>
+            <div className="col-start-2 col-span-4 p-2 bg-red-400 text-white">
+              <div className="flex justify-end">{error}</div>
             </div>
           )}
-          <div className="col-start-2 col-span-4 p-4 bg-gray-200">
+          {success && (
+            <div className="col-start-2 col-span-4 p-2 bg-green-400 text-white">
+              <div className="flex justify-end">{success}</div>
+            </div>
+          )}
+          <div className="col-start-2 col-span-4 p-2 bg-gray-200">
             <form onSubmit={handleSubmit}>
               <label className="block p-2">
                 <span className="after:content-['*'] after:ml-0.5 after:text-red-500 block font-medium text-slate-700">
