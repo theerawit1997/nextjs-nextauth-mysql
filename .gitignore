@@ -44,3 +44,5 @@ next-env.d.ts
 /.vscode
 
 testMySQL.js
+
+/src/app/api/test-db
