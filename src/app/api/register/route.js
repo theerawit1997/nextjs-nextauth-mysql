@@ -3,7 +3,7 @@ import User from "@/models/User";
 import bcrypt from "bcryptjs";
 import { initializeDatabase } from "@/lib/sequelize";
 
-initializeDatabase();
+// initializeDatabase(); //test ว่าติดต่อ db ได้ไหม
 
 export async function POST(req) {
   try {
