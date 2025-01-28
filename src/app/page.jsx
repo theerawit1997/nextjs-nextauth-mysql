@@ -7,7 +7,7 @@ export default function Home() {
   return (
     <main>
      <Navbar/>
-        
+        1st page
     </main>
   );
 }

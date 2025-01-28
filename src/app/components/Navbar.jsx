@@ -1,7 +1,10 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
+import { signOut } from "next-auth/react";
 
-export default function Navbar() {
+export default function Navbar({ session }) {
   return (
     <nav className="bg-gray-800 text-white text-sm font-medium p-3">
       <div className="container mx-auto">
@@ -12,34 +15,42 @@ export default function Navbar() {
             </span>
           </Link>
           <ul className="flex items-center">
-            <li className="mx-1">
-              <Link href="/login">
-                <button
-                  type="button"
-                  className="bg-blue-700 hover:bg-blue-900 focus:ring-4 focus:ring-blue-300 rounded-lg px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-                >
-                  Sign In
-                </button>
-              </Link>
-            </li>
-            <li className="mx-1">
-              <Link href="/register">
-                <button
-                  type="button"
-                  className="bg-green-700 hover:bg-green-900 focus:ring-4 focus:ring-green-300 rounded-lg px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800"
-                >
-                  Sign Up
-                </button>
-              </Link>
-            </li>
-            <li className="mx-1">              
-              <button
-                  type="button"
-                  className="bg-red-500 hover:bg-red-400 font-bold px-5 py-2.5 me-2 mb-2 border-b-4 border-red-700 hover:border-red-500 rounded"
-                >
-                  Log out
-                </button>
-            </li>
+            {!session ? (
+              <>
+                <li className="mx-1">
+                  <Link href="/login">
+                    <button
+                      type="button"
+                      className="bg-blue-700 hover:bg-blue-900 focus:ring-4 focus:ring-blue-300 rounded-lg px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                    >
+                      Sign In
+                    </button>
+                  </Link>
+                </li>
+                <li className="mx-1">
+                  <Link href="/register">
+                    <button
+                      type="button"
+                      className="bg-green-700 hover:bg-green-900 focus:ring-4 focus:ring-green-300 rounded-lg px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800"
+                    >
+                      Sign Up
+                    </button>
+                  </Link>
+                </li>
+              </>
+            ) : (
+              <>
+                <li className="mx-1">
+                  <button
+                    type="button"
+                    className="bg-red-500 hover:bg-red-400 font-bold px-5 py-2.5 me-2 mb-2 border-b-4 border-red-700 hover:border-red-500 rounded"
+                    onClick={() => signOut()}
+                  >
+                    Log out
+                  </button>
+                </li>
+              </>
+            )}
           </ul>
         </div>
       </div>
