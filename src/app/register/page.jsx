@@ -3,8 +3,13 @@
 import React, { useState } from "react";
 import Navbar from "../components/Navbar";
 import Link from "next/link";
+import { useSession } from 'next-auth/react';
+import { redirect } from 'next/navigation'
 
 function Registerpage() {
+  const { data: session } = useSession();
+  if (session) redirect('/home');
+
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [confirmpassword, setConfirmpassword] = useState("");
@@ -14,9 +19,19 @@ function Registerpage() {
   const [isLoading, setIsLoading] = useState(false);
 
   const validateInputs = () => {
+    //Regular expressions, or regex
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const nameRegex = /^[a-zA-Z0-9 _-]+$/;
+    const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d).+$/;
+
     if (!name || !email || !password || !confirmpassword) {
       displayError("All fields are required.");
+      return false;
+    }
+    if (!nameRegex.test(name)) {
+      displayError(
+        "Name can only contain letters, numbers, spaces, dashes, and underscores."
+      );
       return false;
     }
     if (!emailRegex.test(email)) {
@@ -25,6 +40,10 @@ function Registerpage() {
     }
     if (password.length < 8) {
       displayError("Password must be at least 8 characters long.");
+      return false;
+    }
+    if (!passwordRegex.test(password)) {
+      displayError("Password must contain at least one letter and one number.");
       return false;
     }
     if (password !== confirmpassword) {
@@ -62,7 +81,7 @@ function Registerpage() {
         handleReset();
         const form = e.target;
         form.reset();
-        setSuccess(res.message);        
+        setSuccess(res.message);
       } else {
         displayError(res.message);
       }
