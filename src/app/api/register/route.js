@@ -3,7 +3,7 @@ import User from "@/models/User";
 import bcrypt from "bcryptjs";
 import { initializeDatabase } from "@/lib/sequelize";
 
-// initializeDatabase(); //test ว่าติดต่อ db ได้ไหม
+initializeDatabase(); //test ว่าติดต่อ db ได้ไหม
 
 export async function POST(req) {
   try {
@@ -15,7 +15,7 @@ export async function POST(req) {
 
     const existingUserName = await User.findOne({ where: { name } });
     if (existingUserName) {
-      return NextResponse.json({ message: "name is already registered." }, { status: 409 });
+      return NextResponse.json({ message: "Name is already registered." }, { status: 409 });
     }
 
     const existingUserEmail = await User.findOne({ where: { email } });
